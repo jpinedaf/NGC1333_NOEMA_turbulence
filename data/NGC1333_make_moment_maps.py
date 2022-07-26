@@ -51,6 +51,7 @@ for file_in, file_out, v_min, v_max, thre_i in zip(file_list_in, file_list_TdV, 
 
 
 # Now remove bad velocity points
+# and pad them with the mean of the velocity
 
 # C18O
 Mom1, hd = fits.getdata('NGC1333_SE_C18O-Mom1.fits', header=True)
@@ -64,7 +65,7 @@ fits.writeto('NGC1333_SE_C18O-Mom1_QA_pad.fits', Mom1, hd, overwrite=True)
 # H13CO+
 Mom1, hd = fits.getdata('NGC1333_H13COp_L17-Mom1.fits', header=True)
 TdV = fits.getdata('NGC1333_H13COp_L17-TdV.fits', header=False)
-bad = (TdV < 100.0e-3)
+bad = (TdV < 100.0e-3)  | np.isnan(TdV)
 Mom1[bad] = np.nan
 fits.writeto('NGC1333_H13COp_L17-Mom1_QA.fits', Mom1, hd, overwrite=True)
 Mom1[bad] = np.nanmean(Mom1)
@@ -73,7 +74,7 @@ fits.writeto('NGC1333_H13COp_L17-Mom1_QA_pad.fits', Mom1, hd, overwrite=True)
 # HNC
 Mom1, hd = fits.getdata('NGC1333_HNC_L23-Mom1.fits', header=True)
 TdV = fits.getdata('NGC1333_HNC_L23-TdV.fits', header=False)
-bad = (TdV < 300.0e-3)
+bad = (TdV < 300.0e-3) | np.isnan(TdV)
 Mom1[bad] = np.nan
 fits.writeto('NGC1333_HNC_L23-Mom1_QA.fits', Mom1, hd, overwrite=True)
 Mom1[bad] = np.nanmean(Mom1)
@@ -82,8 +83,30 @@ fits.writeto('NGC1333_HNC_L23-Mom1_QA_pad.fits', Mom1, hd, overwrite=True)
 # HCN
 Mom1, hd = fits.getdata('NGC1333_HCN_L21-Mom1.fits', header=True)
 TdV = fits.getdata('NGC1333_HCN_L21-TdV.fits', header=False)
-bad = (TdV < 1000.0e-3)
+bad = (TdV < 1000.0e-3) | np.isnan(TdV)
 Mom1[bad] = np.nan
 fits.writeto('NGC1333_HCN_L21-Mom1_QA.fits', Mom1, hd, overwrite=True)
 Mom1[bad] = np.nanmean(Mom1)
 fits.writeto('NGC1333_HCN_L21-Mom1_QA_pad.fits', Mom1, hd, overwrite=True)
+
+
+
+
+# Now pad the TdV map
+TdV, hd = fits.getdata('NGC1333_H13COp_L17-TdV.fits', header=True)
+bad = np.isnan(TdV)
+TdV[bad] = np.random.normal(scale=0.020, size=np.sum(bad))
+fits.writeto('NGC1333_H13COp_L17-TdV_pad.fits', TdV, hd, overwrite=True)
+
+
+# HNC
+TdV, hd = fits.getdata('NGC1333_HNC_L23-TdV.fits', header=True)
+bad = np.isnan(TdV)
+TdV[bad] = np.random.normal(scale=0.030, size=np.sum(bad))
+fits.writeto('NGC1333_HNC_L23-TdV_pad.fits', TdV, hd, overwrite=True)
+
+# HCN
+TdV, hd = fits.getdata('NGC1333_HCN_L21-TdV.fits', header=True)
+bad = np.isnan(TdV)
+TdV[bad] = np.random.normal(scale=0.090, size=np.sum(bad))
+fits.writeto('NGC1333_HCN_L21-TdV_pad.fits', TdV, hd, overwrite=True)
