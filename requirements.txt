@@ -1,6 +1,8 @@
-astropy
+astropy >= 5.2.2
 numpy
 matplotlib
 radio-beam
 turbustat  
-
+tqdm
+emcee
+corner
