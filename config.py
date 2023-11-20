@@ -2,8 +2,6 @@ import astropy.units as u
 
 # Config file keeps the filenames across the different python 
 # files and notebooks
-
-
 #
 # Integrated intensity maps
 #
@@ -13,7 +11,6 @@ file_TdV_h13cop_pad = 'data/NGC1333_H13COp_L17-merged_fix_pad_TdV.fits'
 file_TdV_h13cop = 'data/NGC1333_H13COp_L17-merged_fix_TdV.fits'
 file_TdV_hnc_pad = 'data/NGC1333_HNC_L23-merged_fix_pad_TdV.fits'
 file_TdV_hnc = 'data/NGC1333_HNC_L23-merged_fix_TdV.fits'
-
 #
 # Pickle files with each power-spectrum
 #
@@ -26,6 +23,7 @@ file_pickle_h13cop = 'data/powerspec_NGC1333_H13COp_L17-merged_fix_TdV.pickle'
 file_pickle_hnc_pad = 'data/powerspec_NGC1333_HNC_L23-merged_fix_pad_TdV.pickle'
 file_pickle_hnc = 'data/powerspec_NGC1333_HNC_L23-merged_fix_TdV.pickle'
 
-file_pickle_hcn = 'data/powerspec_NGC1333_HCN_L21-TdV-merged_fix_TdV.pickle'
-
 distance = 300. * u.pc
+
+file_EMCEE_HCOp = 'data/EMCEE_samples_HCOp.h5'
+file_EMCEE_HNC = 'data/EMCEE_samples_HNC.h5'
