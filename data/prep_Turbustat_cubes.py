@@ -5,6 +5,17 @@ from astropy.convolution import Gaussian2DKernel, convolve
 from astropy.io import fits
 import matplotlib.pyplot as plt 
 import radio_beam
+
+
+
+plt.rcParams.update({"text.usetex": True,
+                     "font.family": "serif",
+                     'xtick.direction': 'in',
+                     'ytick.direction': 'in',
+                     'xtick.major.size': 6,
+                     'ytick.major.size': 6,
+                     'xtick.minor.size': 3,
+                     'ytick.minor.size': 3})
 plt.ion()
 
 
@@ -95,6 +106,7 @@ for file_in, file_pad, line_i, ii, jj in zip(file_list_out, file_list_pad, line_
 ii = 56
 jj = 110
 line_i = 'C18O'
+Delta_V = 10 - 5.5
 # file_in = 'ngc1333_c18o_3-2.fits'
 file_in = 'NGC1333_SE_C18O.fits'
 make_TdV(file_in, line=line_i)
@@ -108,6 +120,11 @@ plt.text(40, 0.8*np.max(spec), line_i, horizontalalignment='right')
 plt.text(50, 0.8*np.max(spec), rms, horizontalalignment='left')
 print('rms for {0} = {1:.3f} K'.format(line_i, rms))
 
+# print(np.median(rms_map))
+# Median value of 0.185 K
+rms_map = np.round(np.nanstd(np.vstack([cube[:ii,:,:], cube[jj:,:,:]]), 
+                axis=0), decimals=2)
+rms_TdV = rms_map * np.sqrt(np.abs(hd['CDELT3']) * Delta_V)
 
 ###
 # 13CO file
@@ -159,3 +176,35 @@ plt.plot(spec)
 plt.text(40, 0.8*np.max(spec), line_i, horizontalalignment='right')
 plt.text(50, 0.8*np.max(spec), rms, horizontalalignment='left')
 print('rms for {0} = {1:.3f} K'.format(line_i, rms))
+
+#
+# Prepare for stacked spectra
+# 
+file_list_spec = ['NGC1333_13CO_1-0.fits',
+                'NGC1333_SE_C18O.fits',
+                'NGC1333_H13COp_L17-merged_fix.fits',
+                'NGC1333_HNC_L23-merged_fix.fits']
+label_list = [r'$^{13}$CO (1--0)',
+            r'C$^{18}$O (3--2)',
+            r'H$^{13}$CO$^+$ (1--0)',
+            r'HNC (1--0)']
+
+plt.close('all')
+fig, ax = plt.subplots(figsize=(5, 4))
+
+for file_i, label_i in zip(file_list_spec, label_list):
+    cube_i = SpectralCube.read(file_i).to(u.K)
+    spec_i = cube_i.median(axis=(1, 2))
+    vel_i = cube_i.spectral_axis
+    ax.plot(vel_i.to(u.km/u.s).value, spec_i.value, label=label_i, drawstyle='steps-mid')
+ax.set_xlim(-5, 20)
+plt.legend(labelcolor='linecolor', frameon=False)
+ax.set_xlabel(r'Velocity, $V_{LSR}$ (km s$^{-1}$)')
+ax.set_ylabel(r'Brightness (K)')
+
+text_pspec = 'Median Spectra'# in the maps'
+ax.text(0.05, 0.85, text_pspec, horizontalalignment='left', transform=ax.transAxes, size=12)
+
+ax.yaxis.set_ticks(np.arange(0, 2, 0.5))
+
+fig.savefig('../figs/NGC1333_Median_Spectra.pdf', bbox_inches='tight')
