@@ -6,3 +6,4 @@ turbustat
 tqdm
 emcee
 corner
+uncertainties
