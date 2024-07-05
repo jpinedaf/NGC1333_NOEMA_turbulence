@@ -25,6 +25,4 @@ file_pickle_hnc = 'data/powerspec_NGC1333_HNC_L23-merged_fix_TdV.pickle'
 
 distance = 300. * u.pc
 
-file_EMCEE_HCOp = 'data/EMCEE_samples_HCOp.h5'
-file_EMCEE_HNC = 'data/EMCEE_samples_HNC.h5'
 file_EMCEE_All = 'data/EMCEE_samples_All.h5'
