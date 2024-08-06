@@ -1,9 +1,11 @@
 astropy >= 5.2.2
 numpy
+scipy
 matplotlib
 radio-beam
-turbustat  
+turbustat
 tqdm
 emcee
 corner
 uncertainties
+git+https://github.com/jpinedaf/molecular_columns@master#egg=molecular_columns
