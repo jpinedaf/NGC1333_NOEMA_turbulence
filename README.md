@@ -17,13 +17,13 @@ This is developed by:
 Dependencies
 ------------
 ------------
-astropy >= 5.2.2
-numpy
-scipy
-matplotlib
-radio-beam
-turbustat
-tqdm
-emcee
-corner
-uncertainties
+* astropy >= 5.2.2
+* numpy
+* scipy
+* matplotlib
+* radio-beam
+* turbustat
+* tqdm
+* emcee
+* corner
+* uncertainties
