@@ -1,8 +1,11 @@
 # CASA files
 *.last
 
-#MacOS
+# MacOS
 .DS_Store
+
+# h5 files
+*.h5
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
